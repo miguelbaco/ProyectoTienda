@@ -1,0 +1,17 @@
+<resources>
+<!--
+     <Resource id="jdbc/Database" type="DataSource">
+        UserName root
+        Password root
+        JdbcDriver com.mysql.jdbc.Driver
+	JdbcUrl jdbc:mysql://localhost:3306/db1
+      </Resource>
+-->
+      <Resource id="jd" type="DataSource">
+        UserName miguel
+        Password m.22011999
+        JdbcDriver org.sqlite.JDBC
+	JdbcUrl jdbc:sqlite:compra.db
+      </Resource>
+</resources>
+
