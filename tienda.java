@@ -11,6 +11,8 @@ public class tienda{
 	public static void main(String args[]) throws Exception {
 		DAOCompra daocompra = new JDBCCompra();//creacion de DAO para lo relacionado con la base de datos
 		//a continuacion, el codigo para leer el fichero json, que corresponde al catalogo de productos.	
+
+		Console = System.console();
 		String lin = null;
 		ArrayList<String> listaProds = new ArrayList<String>();	
 		BufferedReader br = new BufferedReader(new FileReader("productos.txt"));		
@@ -22,13 +24,94 @@ public class tienda{
 			String[] a = listaProds.get(i).split(":");
 			System.out.println(a[0] + " -> " + a[1] + " €");
 		}
+		System.out.println("\n --Como desea entrar? Proveedor: P | Cliente: C | Dueño: D");
+		String tipoEntrante = console.readLine();
+
+		if (tipoEntrante.equalsIgnoreCase("P")) {
+			System.out.println("¿Que desea hacer con el stock? Añadir A | Eliminar N");
+			String respuesta = console.readLine();
+
+			if(respuesta.equalsIgnoreCase("a")) {
+				System.out.println("Producto a añadir: ");
+				String nuevoproducto = console.readLine();
+				boolean stock = true;
+
+				for(int i = 0;i<listaProds.size();i++){
+					String[] a = listaProds.get(i).split(":");
+					if (a[0].equalsIgnoreCase(nuevoproducto)){
+						System.out.println("Este producto ya se encuentra en stock");
+						stock =false;
+					}
+				}
+				if (stock) {
+					System.out.println("Introduce precio de venta al publico (PVP): ");
+					String nuevoprecio = console.readLine();
+					Double precionuevo = Double.parseDouble(nuevoprecio);
+
+					BufferedWriter buf = new BufferedWriter(new FileWriter("productos.txt", true));		
+					buf.write(nuevoproducto + ":" + precionuevo);
+				}
 
 
+			} else if(respuesta.equalsIgnoreCase("n")) {
+				System.out.println("Producto a eliminar: ");
+				String nuevoproducto = console.readLine();
+				boolean stock = false;
+
+				for(int i = 0;i<listaProds.size();i++){
+					String[] a = listaProds.get(i).split(":");
+					if (a[0].equalsIgnoreCase(nuevoproducto)){
+						stock =true;
+					}
+				}
+				if (stock) {
+					String linea2 = null;
+					BufferedReader br2 = new BufferedReader(new FileReader("productos.txt"));
+					BufferedWriter buf2 = new BufferedWriter(new FileWriter("productos.txt", true));		
+					while((linea2 = br2.readLine()) != null) {
+						String[] a = linea2.split(":");
+        		  		if(!a[0].equalsIgnoreCase(nuevoproducto))
+        		  			buf2.write(linea2);
+       				}
+				}
+			}
+
+
+		} else if (tipoEntrante.equalsIgnoreCase("D")) {
+			while(true){//aqui es donde esta la parte de consultas.
+			System.out.println("Quieres consultar datos? S|N");
+			String respuesta = console.readLine();
+			if (respuesta.equalsIgnoreCase("s")){
+				daocompra.consultart();//te muestra todos los datos guardados
+				System.out.println("Para consultar por persona: N | Para mostrar por ID: I");
+				String respuesta2 = console.readLine();
+				if(respuesta2.equalsIgnoreCase("n")){
+					System.out.println("Introduce nombre");
+					String r = console.readLine();
+					daocompra.consultarn(r);//te muestra los datos que contienen el nombre introducido
+				}
+				
+				else if(respuesta2.equalsIgnoreCase("i")){
+					System.out.println("Introduce id");
+					String r = console.readLine();
+					int r2=Integer.parseInt(r);
+					daocompra.consultari(r2);//te muestra la compra de una persona
+				}
+				else{//si la opcion que se introdujo no es n, p, i que salte este error y que pregunte si desea consultar o no.
+					System.out.println("Lo sentimos! Esa opcion no esta disponible");
+				}
+			}
+			else{//Mensaje despedida cuando el cliente se vaya
+				System.out.println("Vuelva pronto.");
+				break;
+			}
+		}
+
+		} else if (tipoEntrante.equalsIgnoreCase("C")) {
         
         //una vez leidos y guardados, se empieza con la compra
 		Compra c;
 		ArrayList<Compra> lista1 = new ArrayList<Compra>();
-		Console console = null;
 		console = System.console();
 		while(true){//bucle para crear compras, con sus respectivos datos (persona, articulos, cantidad y precio)
 			c = new Compra();
@@ -69,8 +152,7 @@ public class tienda{
 						Date fechaFactura = new Date();//Creación de fecha
 						c.setFecha(fechaFactura);//setteo a la compra de fecha/hora
 						lista1.add(c);//añadido de la compra a la lista
-						if(c != null)
-							daocompra.grabar(c);//se guarda en la base de datos
+						daocompra.grabar(c);//se guarda en la base de datos
 					}
 				}
 				System.out.println("Mas articulos? S|N ");//Para agregar más articulos a la misma persona
@@ -94,34 +176,6 @@ public class tienda{
 		//Confirmación de registro en la base de datos, con la fecha de la factura.
 		System.out.println("Los datos han quedado guardados en la base de datos. A fecha de "+ new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(c.getFecha()));
 		//Se le cambia el formato de la fecha de Compra para que la muestre como nosotros la visualizamos dia-mes-año y hora:min:seg
-
-		while(true){//aqui es donde esta la parte de consultas.
-			System.out.println("Quieres consultar datos? S|N");
-			String respuesta = console.readLine();
-			if (respuesta.equalsIgnoreCase("s")){
-				daocompra.consultart();//te muestra todos los datos guardados
-				System.out.println("Para consultar por persona: N | Para mostrar por ID: I");
-				String respuesta2 = console.readLine();
-				if(respuesta2.equalsIgnoreCase("n")){
-					System.out.println("Introduce nombre");
-					String r = console.readLine();
-					daocompra.consultarn(r);//te muestra los datos que contienen el nombre introducido
-				}
-				
-				else if(respuesta2.equalsIgnoreCase("i")){
-					System.out.println("Introduce id");
-					String r = console.readLine();
-					int r2=Integer.parseInt(r);
-					daocompra.consultari(r2);//te muestra la compra de una persona
-				}
-				else{//si la opcion que se introdujo no es n, p, i que salte este error y que pregunte si desea consultar o no.
-					System.out.println("Lo sentimos! Esa opcion no esta disponible");
-				}
-			}
-			else{//Mensaje despedida cuando el cliente se vaya
-				System.out.println("Vuelva pronto.");
-				break;
-			}
-		}
+		System.out.println("Vuelva pronto.");
 	}
 }
