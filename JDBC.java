@@ -6,10 +6,7 @@ import javax.sql.DataSource;
 public class JDBC {
 	public static void main(String[] args) {
 		Connection conn = null;
-
-		@Resource(name = "jd")
 		private DataSource dataSource;
-
 		try{
 			String sql = "CREATE TABLE IF NOT EXISTS compra (Cliente TEXT,Producto TEXT,Cantidad Double,Precio DOUBLE,ID INTEGER, Fecha TIMESTAMP);";
 			conn = dataSource.getConnection();

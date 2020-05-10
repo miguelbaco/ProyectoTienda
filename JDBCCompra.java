@@ -8,11 +8,11 @@ import javax.sql.DataSource;
 import javax.annotation.Resource;
 //aqui esta el codigo para grabar y consultar
 public class JDBCCompra implements DAOCompra{
-	private Connection conectar() {//se hace un metodo para la conexión, para asi no tener que copiar el codigo siempre
+
+	private DataSource dataSource;
+	private Connection conectar() throws SQLException {
 		
-		Connection conn;
-		@Resource(name = "jd")
-		DataSource dataSource;
+		Connection conn = null;
 
 		try {
 			conn = dataSource.getConnection();
@@ -62,7 +62,7 @@ public class JDBCCompra implements DAOCompra{
 		}
 	}
 	//a partir de aqui, el codigo es para consultar.
-	public void consultart(){//aqui te muestra todo lo que hay almacenado en la base de datos
+	public void consultart() {//aqui te muestra todo lo que hay almacenado en la base de datos
 		try  {
 			String sql1 = "SELECT DISTINCT(ID),Cliente FROM compra";
 			Connection conn = this.conectar();
