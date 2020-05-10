@@ -1,8 +1,6 @@
-nombre:manzanas,precio:2
-nombre:peras,precio:3
-nombre:fresas,precio:1
-nombre:sandias,precio:5
-nombre:naranjas,precio:4
-nombre:mangos,precio:8
-
-
+manzanas:2
+peras:3
+fresas:1
+sandias:5
+naranjas:4
+mangos:8

@@ -1,15 +1,21 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+
+//Implementamos la clase DataSource
+import javax.sql.DataSource;
+import javax.annotation.Resource;
 //aqui esta el codigo para grabar y consultar
 public class JDBCCompra implements DAOCompra{
 	private Connection conectar() {//se hace un metodo para la conexión, para asi no tener que copiar el codigo siempre
-		String url = "jdbc:sqlite:compra.db";
-		Connection conn = null;
+		
+		Connection conn;
+		@Resource(name = "jd")
+		DataSource dataSource;
+
 		try {
-			conn = DriverManager.getConnection(url);
+			conn = dataSource.getConnection();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}

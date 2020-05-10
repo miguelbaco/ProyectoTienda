@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.io.Console;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.lang.Double;
@@ -13,23 +11,20 @@ public class tienda{
 	public static void main(String args[]) throws Exception {
 		DAOCompra daocompra = new JDBCCompra();//creacion de DAO para lo relacionado con la base de datos
 		//a continuacion, el codigo para leer el fichero json, que corresponde al catalogo de productos.	
-		String line = new String("");
 		String lin = null;
 		ArrayList<String> listaProds = new ArrayList<String>();	
-		BufferedReader br = new BufferedReader(new FileReader("productos.json"));		
+		BufferedReader br = new BufferedReader(new FileReader("productos.txt"));		
 		while((lin = br.readLine()) != null) {
-          	line = line + lin;
+          	listaProds.add(lin);
         }
-        JSONArray jsonProductos = new JSONArray(line);
 
-        for (Object obj : jsonProductos){
-        		String nombre = ((JSONObject) obj).getString("nombre");
-        		String precio = ((JSONObject) obj).getString("precio");
-        		listaProds.add(nombre + ":" + precio);//los datos se pasan a una lista,para tenerlos guardados y poder usarlos
+        for(int i = 0;i<listaProds.size();i++){
+			String[] a = listaProds.get(i).split(":");
+			System.out.println(a[0] + " -> " + a[1] + " €");
+		}
 
-        			System.out.println(nombre + ": " + precio + " €");
-        		
-        	}
+
+        
         //una vez leidos y guardados, se empieza con la compra
 		Compra c;
 		ArrayList<Compra> lista1 = new ArrayList<Compra>();
