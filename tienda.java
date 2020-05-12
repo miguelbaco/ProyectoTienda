@@ -1,8 +1,9 @@
-//imports de lo que usaremos
 import java.util.ArrayList;
 import java.io.Console;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.lang.Double;
@@ -12,13 +13,13 @@ public class tienda{
 		DAOCompra daocompra = new JDBCCompra();//creacion de DAO para lo relacionado con la base de datos
 		//a continuacion, el codigo para leer el fichero json, que corresponde al catalogo de productos.	
 
-		Console = System.console();
+		Console console = System.console();
 		String lin = null;
 		ArrayList<String> listaProds = new ArrayList<String>();	
 		BufferedReader br = new BufferedReader(new FileReader("productos.txt"));		
 		while((lin = br.readLine()) != null) {
           	listaProds.add(lin);
-        }
+        }br.close();
 
         for(int i = 0;i<listaProds.size();i++){
 			String[] a = listaProds.get(i).split(":");
@@ -50,6 +51,7 @@ public class tienda{
 
 					BufferedWriter buf = new BufferedWriter(new FileWriter("productos.txt", true));		
 					buf.write(nuevoproducto + ":" + precionuevo);
+					buf.close();
 				}
 
 
@@ -65,14 +67,17 @@ public class tienda{
 					}
 				}
 				if (stock) {
-					String linea2 = null;
+					String a;
 					BufferedReader br2 = new BufferedReader(new FileReader("productos.txt"));
-					BufferedWriter buf2 = new BufferedWriter(new FileWriter("productos.txt", true));		
-					while((linea2 = br2.readLine()) != null) {
-						String[] a = linea2.split(":");
-        		  		if(!a[0].equalsIgnoreCase(nuevoproducto))
-        		  			buf2.write(linea2);
-       				}
+					BufferedWriter buf2 = new BufferedWriter(new FileWriter("productos.txt"));		
+					while((a = br2.readLine()) != null) {
+						String[] a1=a.split(":");
+						if(a1[0]!=nuevoproducto){
+							buf2.write(a);
+						}
+
+       				}buf2.close();
+       				br2.close();
 				}
 			}
 
@@ -178,4 +183,4 @@ public class tienda{
 		//Se le cambia el formato de la fecha de Compra para que la muestre como nosotros la visualizamos dia-mes-año y hora:min:seg
 		System.out.println("Vuelva pronto.");
 	}
-}
+}}
