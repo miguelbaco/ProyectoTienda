@@ -67,17 +67,18 @@ public class tienda{
 					}
 				}
 				if (stock) {
-					String a;
-					BufferedReader br2 = new BufferedReader(new FileReader("productos.txt"));
+					
+					
 					BufferedWriter buf2 = new BufferedWriter(new FileWriter("productos.txt"));		
-					while((a = br2.readLine()) != null) {
-						String[] a1=a.split(":");
-						if(a1[0]!=nuevoproducto){
-							buf2.write(a);
+					for(int i=0; i<listaProds.size(); i++) {
+						String[] a1=listaProds.get(i).split(":");
+						System.out.println(a1[0]);
+						if(!a1[0].equals(nuevoproducto)){
+							buf2.write(listaProds.get(i)+"\n");
 						}
 
        				}buf2.close();
-       				br2.close();
+       				
 				}
 			}
 
