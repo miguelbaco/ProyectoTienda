@@ -11,7 +11,7 @@ import java.lang.Double;
 public class tienda{
 	public static void main(String args[]) throws Exception {
 		DAOCompra daocompra = new JDBCCompra();//creacion de DAO para lo relacionado con la base de datos
-		//a continuacion, el codigo para leer el fichero json, que corresponde al catalogo de productos.	
+		//a continuacion, el codigo para leer el fichero, que corresponde al catalogo de productos.	
 
 		Console console = System.console();
 		String lin = null;
@@ -29,7 +29,7 @@ public class tienda{
 		String tipoEntrante = console.readLine();
 
 		if (tipoEntrante.equalsIgnoreCase("P")) {
-			System.out.println("¿Que desea hacer con el stock? Añadir A | Eliminar N");
+			System.out.println("¿Que desea hacer con el stock? Añadir A | Eliminar N | Salir S (o enter)");
 			String respuesta = console.readLine();
 
 			if(respuesta.equalsIgnoreCase("a")) {
@@ -52,6 +52,9 @@ public class tienda{
 					BufferedWriter buf = new BufferedWriter(new FileWriter("productos.txt", true));		
 					buf.write(nuevoproducto + ":" + precionuevo);
 					buf.close();
+
+					System.out.println("Ya se ha añadido tu producto a nuestro stock.");
+					System.out.println("Gracias por proveernos");
 				}
 
 
@@ -72,14 +75,19 @@ public class tienda{
 					BufferedWriter buf2 = new BufferedWriter(new FileWriter("productos.txt"));		
 					for(int i=0; i<listaProds.size(); i++) {
 						String[] a1=listaProds.get(i).split(":");
-						System.out.println(a1[0]);
 						if(!a1[0].equals(nuevoproducto)){
 							buf2.write(listaProds.get(i)+"\n");
 						}
 
-       				}buf2.close();
-       				
+       				}
+       				buf2.close();
+
+
+					System.out.println("Ya se ha eliminado tu producto de nuestro stock.");
+					System.out.println("Gracias por proveernos");      				
 				}
+			} else if (respuesta.equalsIgnoreCase("s") || respuesta.equalsIgnoreCase("")) {
+				System.out.println("Trae ya los productos proveedor!!");
 			}
 
 
@@ -102,13 +110,12 @@ public class tienda{
 					String r = console.readLine();
 					int r2=Integer.parseInt(r);
 					daocompra.consultari(r2);//te muestra la compra de una persona
-				}
-				else{//si la opcion que se introdujo no es n, p, i que salte este error y que pregunte si desea consultar o no.
+				} else{//si la opcion que se introdujo no es n, p, i que salte este error y que pregunte si desea consultar o no.
 					System.out.println("Lo sentimos! Esa opcion no esta disponible");
 				}
 			}
 			else{//Mensaje despedida cuando el cliente se vaya
-				System.out.println("Vuelva pronto.");
+				System.out.println("Nos vemos jefe!.");
 				break;
 			}
 		}
@@ -139,7 +146,7 @@ public class tienda{
 				if(articulo.equals("")){
 					break;
 				}
-				for(int i = 0;i<listaProds.size();i++){//aqui esta la informacion del json
+				for(int i = 0;i<listaProds.size();i++){//aqui esta la informacion
 					String[] a = listaProds.get(i).split(":");
 					
 					if(articulo.equals(a[0])){
@@ -165,6 +172,7 @@ public class tienda{
 				String masart = console.readLine();
 				if(masart.equalsIgnoreCase("n")){
 					c.setArticulos(lista1);
+					System.out.println("Gracias por su compra " + c.getPer().getName());
 					break;
 				}
 				else{
