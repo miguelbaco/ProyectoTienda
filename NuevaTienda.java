@@ -29,8 +29,10 @@ public class NuevaTienda extends Application{
 
 	static ArrayList<String> listaProds = new ArrayList<String>();
 	//Compra c;
-	Scene scene1, scene2, scene3;
+	Scene scene0, scene1, scene2, scene3;
 	Label tiendalabel = new Label("BACO & GARRIDO ALIMENTOS");
+	Label bienvenido = new Label("¡BIENVENIDO!");
+	Label pswl = new Label("Introduce contraseña:");
 	public static void main(String[] args) throws Exception{
 		try {
 
@@ -57,15 +59,17 @@ public class NuevaTienda extends Application{
 		//Escena 1(Principal)
       	Button productor = new Button("PRODUCTOR");
 		Button cliente = new Button("CLIENTE");
+		Button cd = new Button("CONSULTAR COMPRAS");
 
 		productor.setOnAction(e -> stage.setScene(scene2));
 		cliente.setOnAction(e -> stage.setScene(scene3));
+		cd.setOnAction(e -> stage.setScene(scene0));
 
 		HBox hbox=new HBox();
 		hbox.getChildren().addAll(productor, cliente);
 		hbox.setSpacing(15);
 		VBox vbox = new VBox();
-      	vbox.getChildren().addAll(tiendalabel,hbox);
+      	vbox.getChildren().addAll(tiendalabel,hbox,cd);
       	vbox.setSpacing(15);
       	vbox.setMinSize(150,100);
 	  	vbox.setStyle("-fx-padding: 10;" +
@@ -77,9 +81,27 @@ public class NuevaTienda extends Application{
       	
       	scene1 = new Scene(vbox);
 
+      	//Escena 0(Consulta Datos)
+      	
+        
+      	TextField pswt0 = new TextField();
+        HBox h0 =new HBox();
+        h0.getChildren().addAll(pswl,pswt0);
+        VBox vbox0 = new VBox();
+      	vbox0.getChildren().addAll(tiendalabel,bienvenido,h0);
+      	vbox0.setSpacing(15);
+      	vbox0.setMinSize(150,100);
+	  	vbox0.setStyle("-fx-padding: 10;" +
+	                "-fx-border-style: solid inside;" +
+	                "-fx-border-width: 2;" +
+	                "-fx-border-insets: 5;" +
+	                "-fx-border-radius: 5;" +
+	                "-fx-border-color: blue;");
+
+	  	 scene0 = new Scene(vbox0);
+
 		//Escena 2(Productor)
-            Label bienvenido = new Label("¡BIENVENIDO!");
-            Label pswl = new Label("Introduce contraseña:");
+            
             TextField pswt = new TextField();
             HBox h =new HBox();
             h.getChildren().addAll(pswl,pswt);

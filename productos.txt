@@ -1,6 +1,5 @@
-manzanas:2
-peras:3
-fresas:1
-sandias:5
-naranjas:4
-mangos:8
+manzanas:2.0
+peras:3.0
+sandias:5.0
+naranjas:4.0
+mangos:8.0
