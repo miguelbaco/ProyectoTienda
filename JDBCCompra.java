@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import org.sqlite.SQLiteDataSource;
 //Implementamos la clase DataSource
 import javax.sql.DataSource;
-import javax.annotation.Resource;
 //aqui esta el codigo para grabar y consultar
 public class JDBCCompra implements DAOCompra{
         private SQLiteDataSource dataSource = new SQLiteDataSource();
