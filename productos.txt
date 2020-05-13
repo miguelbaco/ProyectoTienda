@@ -1,5 +1,12 @@
 manzanas:2.0
 peras:3.0
+<<<<<<< HEAD
 sandias:5.0
 naranjas:4.0
 mangos:8.0
+=======
+fresas:1.0
+sandias:5.0
+naranjas:4.0
+sartenes:21.0
+>>>>>>> d3f8ba59f3e78508e44fbc1a121585f042cbdb63
