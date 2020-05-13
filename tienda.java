@@ -96,7 +96,7 @@ public class tienda{
 			System.out.println("Quieres consultar datos? S|N");
 			String respuesta = console.readLine();
 			if (respuesta.equalsIgnoreCase("s")){
-				daocompra.consultart();//te muestra todos los datos guardados
+				System.out.println(daocompra.consultart());//te muestra todos los datos guardados
 				System.out.println("Para consultar por persona: N | Para mostrar por ID: I");
 				String respuesta2 = console.readLine();
 				if(respuesta2.equalsIgnoreCase("n")){
@@ -109,7 +109,7 @@ public class tienda{
 					System.out.println("Introduce id");
 					String r = console.readLine();
 					int r2=Integer.parseInt(r);
-					daocompra.consultari(r2);//te muestra la compra de una persona
+					System.out.println(daocompra.consultari(r2));//te muestra la compra de una persona
 				} else{//si la opcion que se introdujo no es n, p, i que salte este error y que pregunte si desea consultar o no.
 					System.out.println("Lo sentimos! Esa opcion no esta disponible");
 				}

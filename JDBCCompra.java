@@ -56,20 +56,23 @@ public class JDBCCompra implements DAOCompra{
                 }
         }
         //a partir de aqui, el codigo es para consultar.
-        public void consultart() {//aqui te muestra todo lo que hay almacenado en la base de datos
+        public String consultart() {//aqui te muestra todo lo que hay almacenado en la base de datos
+                String aa="";
                 try  {
+                        
                         String sql1 = "SELECT DISTINCT(ID),Cliente FROM compra";
                         Connection conn = this.conectar();
                         PreparedStatement pstmt = conn.prepareStatement(sql1);
                         ResultSet rs = pstmt.executeQuery();
                         System.out.println("CLIENTE  ID");
                         while (rs.next()) {
-                                 System.out.println(rs.getString("Cliente")+" --> "+rs.getInt("ID"));
+                                 aa=aa+(rs.getString("Cliente")+" --> "+rs.getInt("ID")+"\n");
                          }     
+
                        
                 } catch (SQLException o) {
                         System.out.println(o.getMessage());
-                }
+                }return aa;
         }
         public void consultarn(String nombre){//aqui te muestra solo aquellos con el nombre introducido
                 try{
@@ -86,7 +89,8 @@ public class JDBCCompra implements DAOCompra{
                         System.out.println(o.getMessage());
                 }
         }
-        public void consultari(int id){//aqui te muestra solo aquellos con la ID introducida.
+        public String consultari(int id){//aqui te muestra solo aquellos con la ID introducida.
+                String aa="";
                 try{
                         String sql2 = "SELECT * FROM compra WHERE ID ="+id;
                         Connection conn = this.conectar();
@@ -95,11 +99,12 @@ public class JDBCCompra implements DAOCompra{
                         System.out.println("ID: " + rs.getInt("ID"));
                         System.out.println("Esta ID le pertenece a: " + rs.getString("Cliente"));
                         while (rs.next()) {     
-                                 System.out.println(rs.getDouble("Cantidad")+" Kg. de "+rs.getString("Producto")+" por "+rs.getDouble("Precio") + " €, a fecha de " + rs.getTimestamp("Fecha"));
+                                 aa=aa+(rs.getDouble("Cantidad")+" Kg. de "+rs.getString("Producto")+" por "+rs.getDouble("Precio") + " €, a fecha de " + rs.getTimestamp("Fecha")+"\n\n");
                          }     
                 }
                 catch (SQLException o) {
                         System.out.println(o.getMessage());
                 }
+                return aa;
         }
 }
