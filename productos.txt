@@ -6,4 +6,4 @@ mangos:8.0
 fresas:1.0
 sandias:5.0
 naranjas:4.0
-sartenes:21.0
+cacahuetes:9.0
