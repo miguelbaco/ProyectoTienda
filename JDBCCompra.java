@@ -64,7 +64,7 @@ public class JDBCCompra implements DAOCompra{
                         Connection conn = this.conectar();
                         PreparedStatement pstmt = conn.prepareStatement(sql1);
                         ResultSet rs = pstmt.executeQuery();
-                        System.out.println("CLIENTE  ID");
+                        
                         while (rs.next()) {
                                  aa=aa+(rs.getString("Cliente")+" --> "+rs.getInt("ID")+"\n");
                          }     
@@ -99,7 +99,7 @@ public class JDBCCompra implements DAOCompra{
                         System.out.println("ID: " + rs.getInt("ID"));
                         System.out.println("Esta ID le pertenece a: " + rs.getString("Cliente"));
                         while (rs.next()) {     
-                                 aa=aa+(rs.getDouble("Cantidad")+" Kg. de "+rs.getString("Producto")+" por "+rs.getDouble("Precio") + " €, a fecha de " + rs.getTimestamp("Fecha")+"\n\n");
+                                 aa=aa+(rs.getDouble("Cantidad")+" Kg. de "+rs.getString("Producto")+"\n"+rs.getDouble("Precio") + " €" +"\n"+ "Fecha: " + rs.getTimestamp("Fecha")+"\n\n");
                          }     
                 }
                 catch (SQLException o) {
