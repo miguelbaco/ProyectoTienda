@@ -1,5 +1,5 @@
 manzanas:2
 sandias:5
-naranjas:4
 fresas:3
 peras:6
+lechuga:7

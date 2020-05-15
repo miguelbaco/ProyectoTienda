@@ -1,195 +1,554 @@
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Priority;
+
+
+import javafx.scene.layout.StackPane;
+
+
+
 import java.util.ArrayList;
 import java.io.Console;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.lang.Double;
+import java.io.*;
+import java.util.*;
 
-public class tienda{
-	public static void main(String args[]) throws Exception {
-		DAOCompra daocompra = new JDBCCompra();//creacion de DAO para lo relacionado con la base de datos
-		//a continuacion, el codigo para leer el fichero, que corresponde al catalogo de productos.	
+public class Tienda extends Application{
 
-		Console console = System.console();
+	static ArrayList<String> listaProds = new ArrayList<String>();
+	Compra c;
+	String resulid="";
+	Label errormssg = new Label("");
+	Label ll=new Label("");
+	Label ll2 = new Label("");
+	Scene scene1, scene2, scene3, scene4, scene5, scene6, scenefactura;
+	Label tiendalabel = new Label("BACO & GARRIDO ALIMENTOS");
+	DAOCompra daocompra = new JDBCCompra();
+	 Label lprod6=new Label("");
+	 Label lprod3=new Label("");
+	 Label ids=new Label("");
+	 int idcompra=0;
+	 int contadorarticulos = 0;
+	 String cantart= "";
+     String nomper = "";
+     String artcom = "";
+
+
+	 Stage stage2 = new Stage();
+
+	public static void main(String[] args) throws Exception{
+		try {
+
+
+
+			//DAOCompra daocompra = new JDBCCompra();//creacion de DAO para lo relacionado con la base de datos
+		//a continuacion, el codigo para leer el fichero json, que corresponde al catalogo de productos.	
 		String lin = null;
-		ArrayList<String> listaProds = new ArrayList<String>();	
+			
 		BufferedReader br = new BufferedReader(new FileReader("productos.txt"));		
 		while((lin = br.readLine()) != null) {
           	listaProds.add(lin);
-        }br.close();
+        }
 
-        for(int i = 0;i<listaProds.size();i++){
+        /*String a1="";
+	  	  for(int i = 0;i<listaProds.size();i++){
 			String[] a = listaProds.get(i).split(":");
-			System.out.println(a[0] + " -> " + a[1] + " €");
+			a1=a1+a[0] + " -> " + a[1] + " €"+"\n";
 		}
-		System.out.println("\n --Como desea entrar? Proveedor: P | Cliente: C | Dueño: D");
-		String tipoEntrante = console.readLine();
+		lprod6=new Label(a1);*/
 
-		if (tipoEntrante.equalsIgnoreCase("P")) {
-			System.out.println("¿Que desea hacer con el stock? Añadir A | Eliminar N | Salir S (o enter)");
-			String respuesta = console.readLine();
+        Application.launch(args);
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+	}
 
-			if(respuesta.equalsIgnoreCase("a")) {
-				System.out.println("Producto a añadir: ");
-				String nuevoproducto = console.readLine();
-				boolean stock = true;
+	@Override
+	public void start(Stage stage) throws Exception{
+		
+		stage.setTitle("BACO & GARRIDO ALIMENTOS");
 
-				for(int i = 0;i<listaProds.size();i++){
-					String[] a = listaProds.get(i).split(":");
-					if (a[0].equalsIgnoreCase(nuevoproducto)){
-						System.out.println("Este producto ya se encuentra en stock");
-						stock =false;
-					}
-				}
-				if (stock) {
-					System.out.println("Introduce precio de venta al publico (PVP): ");
-					String nuevoprecio = console.readLine();
-					Double precionuevo = Double.parseDouble(nuevoprecio);
+		//Escena 1(Principal)
+		Label tiendalabel1 = new Label("BACO & GARRIDO ALIMENTOS");
+      	Button proveedor = new Button("PROVEEDOR");
+		Button cliente = new Button("CLIENTE");
+		Button dueno = new Button("Dueño");
+		Button exit1 = new Button("Salir");
 
-					BufferedWriter buf = new BufferedWriter(new FileWriter("productos.txt", true));		
-					buf.write(nuevoproducto + ":" + precionuevo);
-					buf.close();
+		exit1.setOnAction(e -> {stage.close();});
+		proveedor.setOnAction(e -> stage.setScene(scene2));
+		cliente.setOnAction(e -> stage.setScene(scene3));
+		dueno.setOnAction(e -> stage.setScene(scene4));
+		
 
-					System.out.println("Ya se ha añadido tu producto a nuestro stock.");
-					System.out.println("Gracias por proveernos");
-				}
+		HBox hbox=new HBox();
+		hbox.getChildren().addAll(dueno,proveedor, cliente);
+		hbox.setSpacing(15);
+		VBox vbox = new VBox();
+      	vbox.getChildren().addAll(tiendalabel1,hbox,exit1);
+      	vbox.setSpacing(15);
+      	vbox.setMinSize(150,100);
+	  	vbox.setStyle("-fx-padding: 10;" +
+	                "-fx-border-style: solid inside;" +
+	                "-fx-border-width: 2;" +
+	                "-fx-border-insets: 5;" +
+	                "-fx-border-radius: 5;" +
+	                "-fx-border-color: blue;");
+      	
+      	scene1 = new Scene(vbox);
 
+		//Escena 2(Proveedor)
+		Label tiendalabel2 = new Label("BACO & GARRIDO ALIMENTOS");
+            Label bienvenido = new Label("¡BIENVENIDO!");
+            Label pswl = new Label("Introduce contraseña:");
+            Button entrar = new Button("Entrar");
+            TextField pswt = new TextField();
+            Button exit2 = new Button("Salir");
+            Button volver2 = new Button("Volver");
 
-			} else if(respuesta.equalsIgnoreCase("n")) {
-				System.out.println("Producto a eliminar: ");
-				String nuevoproducto = console.readLine();
-				boolean stock = false;
+            volver2.setOnAction(e -> stage.setScene(scene1));
+			exit2.setOnAction(e -> {
+			stage.close();
+		});
+            entrar.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override public void handle(ActionEvent e) 
+            {
+            	if(pswt.getText().equals("PaulinoApruebame")){
+               stage.setScene(scene6);}
+            }
+        });
+            HBox h2 =new HBox();
+            h2.getChildren().addAll(pswl,pswt,entrar);
+            HBox h22 = new HBox();
+            h22.getChildren().addAll(volver2,exit2);
+            VBox vbox2 = new VBox();
+      	vbox2.getChildren().addAll(tiendalabel2,bienvenido,h2,h22);
+      	vbox2.setSpacing(15);
+      	vbox2.setMinSize(150,100);
+	  	vbox2.setStyle("-fx-padding: 10;" +
+	                "-fx-border-style: solid inside;" +
+	                "-fx-border-width: 2;" +
+	                "-fx-border-insets: 5;" +
+	                "-fx-border-radius: 5;" +
+	                "-fx-border-color: blue;");
 
-				for(int i = 0;i<listaProds.size();i++){
-					String[] a = listaProds.get(i).split(":");
-					if (a[0].equalsIgnoreCase(nuevoproducto)){
-						stock =true;
-					}
-				}
-				if (stock) {
+	  	 scene2 = new Scene(vbox2);
+      	
+
+		//Escena 3(Cliente)
+	  	 Label tiendalabel3 = new Label("BACO & GARRIDO ALIMENTOS");
+
+	  	 Label prod = new Label("Productos disponibles:");
+	  	 Button exit3 = new Button("Salir");
+	  	 Button volver3 = new Button("Volver");
+	  	 Label lnombre= new Label("Ingresa tu nombre aqui:");
+	  	 TextField tnombre=new TextField();
+	  	 Label lprodcompra = new Label("Producto a comprar:");
+	  	 TextField tprodcompra= new TextField();
+	  	 Label lcantidadcompra=new Label("Cantidad:");
+	  	 TextField tcantidadcompra= new TextField();
+	  	 Button bcomprar = new Button("Comprar");
+	  	 Button banadirprod = new Button("Añadir al carrito");
+
+	  	 ArrayList<Compra> lista1 = new ArrayList<Compra>();
+	  	 Compra c = new Compra();
+	  	 Person p = new Person();
+
+	  	 banadirprod.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	Boolean b1 = false;
+
+            	try {
+
+            	if(contadorarticulos == 0) {
+            		contadorarticulos++;
+            		BufferedReader brid = new BufferedReader(new FileReader("idcompra.txt"));		
+					idcompra=Integer.parseInt(brid.readLine())+1;
+					String stringidcompra=String.valueOf(idcompra);
+          			brid.close();
+          			BufferedWriter bwid= new BufferedWriter(new FileWriter("idcompra.txt"));
+          			bwid.write(stringidcompra);
+          			bwid.close();
+            		Compra c = new Compra();
+            		Person p = new Person();
+            	
+
+            		artcom = tprodcompra.getText();
+               		cantart= tcantidadcompra.getText();
+
+               		for(int i = 0;i<listaProds.size();i++){//aqui esta la informacion
+						String[] a = listaProds.get(i).split(":");
 					
+						if(artcom.equals(a[0])){
+							b1=true;
+							c.getArt().setNombre(artcom);
+							Double preciop=Double.parseDouble(a[1]);
+							if(cantart.equals("")){
+								cantart="0";
+							}
+							nomper = tnombre.getText();
+							if (nomper.equals("")){
+          						p.setName("Anonimo");
+          					}
+
+          					p.setName(nomper);
+          					c.setId(idcompra);
+
+							Double cant = Double.parseDouble(cantart);
+							c.getArt().setPrecio(preciop * cant);//setteo de precio por cantidad (precio final por producto)
+							c.getPer().setName(p.getName());
+							c.setCant(cant);
+							daocompra.grabar(c);
+
+							
+						}
+					}
+
+            	} else {
+               		contadorarticulos++;
+               		Compra c= new Compra();
+               		artcom = tprodcompra.getText();
+               		cantart= tcantidadcompra.getText();
+
+               		for(int i = 0;i<listaProds.size();i++){//aqui esta la informacion
+						String[] a = listaProds.get(i).split(":");
 					
-					BufferedWriter buf2 = new BufferedWriter(new FileWriter("productos.txt"));		
+						if(artcom.equals(a[0])){
+							b1=true;
+							c.getArt().setNombre(artcom);
+							Double preciop=Double.parseDouble(a[1]);
+							if(cantart.equals("")){
+								cantart="0";
+							}
+							nomper = tnombre.getText();
+							if (nomper.equals("")){
+          						p.setName("Anonimo");
+          					}
+
+          					p.setName(nomper);
+          					c.setId(idcompra);
+
+							Double cant = Double.parseDouble(cantart);
+							c.getArt().setPrecio(preciop * cant);//setteo de precio por cantidad (precio final por producto)
+							c.setCant(cant);
+							c.getPer().setName(p.getName());
+          					Date fechaFactura = new Date();
+          					c.setFecha(fechaFactura);
+							daocompra.grabar(c);
+
+						}
+					}
+					if (b1 == false) {
+						errormssg.setText("Introduzca un producto que esté en la lista");
+					}
+            	}
+              } catch (Exception e1) {
+         			e1.printStackTrace();
+      			}
+            }
+        });
+
+
+	  	 bcomprar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	try{          			
+
+          			ids.setText(daocompra.consultart());
+
+          			ll.setText(daocompra.consultari(idcompra) + "\nTotal de articulos: " + contadorarticulos);
+
+          				contadorarticulos = 0;						
+            			stage2.setTitle("Factura");
+            			stage2.setScene(scenefactura);
+            			stage2.show();
+
+
+     				 }catch (Exception e1) {
+         				e1.printStackTrace();
+      				  }
+            }
+        });
+
+         volver3.setOnAction(e -> stage.setScene(scene1));
+		exit3.setOnAction(e -> {
+			stage.close();
+		});
+
+
+
+
+	  	 String a1="";
+	  	  for(int i = 0;i<listaProds.size();i++){
+			String[] a = listaProds.get(i).split(":");
+			a1=a1+"\n"+(a[0] + " -> " + a[1] + " €");
+		}
+		lprod3.setText(a1);
+		HBox h3 = new HBox();
+            h3.getChildren().addAll(volver3,exit3);
+        HBox hnombre = new HBox();
+        hnombre.getChildren().addAll(lnombre,tnombre);
+        HBox hcompra=new HBox();
+        hcompra.getChildren().addAll(lprodcompra,tprodcompra,lcantidadcompra,tcantidadcompra);
+        HBox fcompra = new HBox();
+        fcompra.getChildren().addAll(banadirprod, bcomprar);
+		VBox vbox3=new VBox();
+		vbox3.getChildren().addAll(tiendalabel3,prod,lprod3,hnombre,hcompra,fcompra,errormssg,h3);
+		vbox3.setSpacing(15);
+      	vbox3.setMinSize(150,150);
+	  	vbox3.setStyle("-fx-padding: 10;" +
+	                "-fx-border-style: solid inside;" +
+	                "-fx-border-width: 2;" +
+	                "-fx-border-insets: 5;" +
+	                "-fx-border-radius: 5;" +
+	                "-fx-border-color: blue;");
+	  	scene3=new Scene(vbox3);
+
+
+	  	//Escena 4(Dueño)
+	  	Label tiendalabel4 = new Label("BACO & GARRIDO ALIMENTOS");
+
+	  	 ids.setText(daocompra.consultart());
+	  	 
+		Label introduzca=new Label("introduzca id de Compra:");
+		TextField tf =new TextField();
+		Button buscar = new Button("Buscar");
+		Button exit4 = new Button("Salir");
+		Button volver4 = new Button("Volver");
+
+            volver4.setOnAction(e -> stage.setScene(scene1));
+		exit4.setOnAction(e -> {
+			stage.close();
+		});
+		buscar.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override public void handle(ActionEvent e) 
+            {
+            
+               stage.setScene(scene5);
+               resulid=daocompra.consultari(Integer.parseInt(tf.getText()));
+              ll2.setText(resulid);
+            }
+        });
+		HBox h4=new HBox();
+		h4.getChildren().addAll(introduzca,tf,buscar);
+		HBox h44 = new HBox();
+            h44.getChildren().addAll(volver4,exit4);
+		VBox vbox4=new VBox();
+		vbox4.getChildren().addAll(tiendalabel4,ids,h4,h44);
+		vbox4.setSpacing(15);
+      	vbox4.setMinSize(150,100);
+	  	vbox4.setStyle("-fx-padding: 10;" +
+	                "-fx-border-style: solid inside;" +
+	                "-fx-border-width: 2;" +
+	                "-fx-border-insets: 5;" +
+	                "-fx-border-radius: 5;" +
+	                "-fx-border-color: blue;");
+	  	scene4=new Scene(vbox4);
+
+
+	  	//Escena 5(Datos compra)
+
+	  	Label tiendalabel5 = new Label("BACO & GARRIDO ALIMENTOS");
+		VBox vbox5=new VBox();
+		Button exit5 = new Button("Salir");
+		Button volver5 = new Button("Volver");
+
+            volver5.setOnAction(e -> stage.setScene(scene4));
+		exit5.setOnAction(e -> {
+			stage.close();
+		});
+		HBox h5 = new HBox();
+            h5.getChildren().addAll(volver5,exit5);
+		vbox5.getChildren().addAll(tiendalabel5,ll2,h5);
+		vbox5.setSpacing(15);
+      	vbox5.setMinSize(500,400);
+	  	vbox5.setStyle("-fx-padding: 10;" +
+	                "-fx-border-style: solid inside;" +
+	                "-fx-border-width: 2;" +
+	                "-fx-border-insets: 5;" +
+	                "-fx-border-radius: 5;" +
+	                "-fx-border-color: blue;");
+	  	scene5=new Scene(vbox5);
+	  	
+
+
+		
+
+
+		//Escena 6(Introducir o eliminar productos)
+
+		Label tiendalabel6 = new Label("BACO & GARRIDO ALIMENTOS");
+
+	  	 Label prod6 = new Label("Productos disponibles:");
+	  	 Button exit6 = new Button("Salir");
+	  	 Button volver6 = new Button("Volver");
+	  	 Label anadirnombre = new Label("Producto a añadir:");
+	  	 TextField tanadirnombre = new TextField();
+	  	 Label anadirprecio = new Label("Precio:");
+	  	 TextField tanadirprecio = new TextField(); 
+	  	 Button banadir = new Button("Añadir");
+	  	 Label eliminar = new Label("Producto a eliminar:");
+	  	 TextField teliminar = new TextField();
+	  	 Button beliminar = new Button("Eliminar");
+
+	  	 banadir.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override public void handle(ActionEvent e) 
+            {
+               boolean stock = true;
+		try{
+		for(int i = 0;i<listaProds.size();i++){
+			String[] a = listaProds.get(i).split(":");
+			if (a[0].equalsIgnoreCase(tanadirnombre.getText())){
+				System.out.println("Este producto ya se encuentra en stock");
+				stock =false;
+			}
+		}
+			if (stock) {
+				
+				Double precionuevo = Double.parseDouble(tanadirprecio.getText());
+
+				BufferedWriter buf3 = new BufferedWriter(new FileWriter("productos.txt", true));		
+				buf3.write(tanadirnombre.getText() + ":" + tanadirprecio.getText());
+				buf3.close();
+				 listaProds.add(tanadirnombre.getText()+":"+tanadirprecio.getText());
+
+				}
+				String a2="";
+	  	  for(int i = 0;i<listaProds.size();i++){
+			String[] a = listaProds.get(i).split(":");
+			a2=a2+a[0] + " -> " + a[1] + " €"+"\n";
+		}
+		 lprod6.setText(a2);
+		  lprod3.setText(a2);
+			
+		
+	}catch (Exception e1) {
+         e1.printStackTrace();
+      }    
+            }
+        });
+	  	 beliminar.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override public void handle(ActionEvent e) 
+            {
+               boolean stock = false;
+		try{
+		for(int i = 0;i<listaProds.size();i++){
+		String[] a = listaProds.get(i).split(":");
+		if (a[0].equalsIgnoreCase(teliminar.getText())){
+			stock =true;
+			}
+		}
+		if (stock) {		
+		BufferedWriter buf6 = new BufferedWriter(new FileWriter("productos.txt"));		
 					for(int i=0; i<listaProds.size(); i++) {
 						String[] a1=listaProds.get(i).split(":");
-						if(!a1[0].equals(nuevoproducto)){
-							buf2.write(listaProds.get(i)+"\n");
+						if(!a1[0].equals(teliminar.getText())){
+							buf6.write(listaProds.get(i)+"\n");
 						}
 
        				}
-       				buf2.close();
+       				buf6.close();
 
 
-					System.out.println("Ya se ha eliminado tu producto de nuestro stock.");
-					System.out.println("Gracias por proveernos");      				
-				}
-			} else if (respuesta.equalsIgnoreCase("s") || respuesta.equalsIgnoreCase("")) {
-				System.out.println("Trae ya los productos proveedor!!");
-			}
+       				listaProds.clear();
+       				String lin = null;
 
+					BufferedReader br6 = new BufferedReader(new FileReader("productos.txt"));		
+					while((lin = br6.readLine()) != null) {
+          			listaProds.add(lin);
+          		}
+          			br6.close();
 
-		} else if (tipoEntrante.equalsIgnoreCase("D")) {
-			while(true){//aqui es donde esta la parte de consultas.
-			System.out.println("Quieres consultar datos? S|N");
-			String respuesta = console.readLine();
-			if (respuesta.equalsIgnoreCase("s")){
-				System.out.println(daocompra.consultart());//te muestra todos los datos guardados
-				System.out.println("Para consultar por persona: N | Para mostrar por ID: I");
-				String respuesta2 = console.readLine();
-				if(respuesta2.equalsIgnoreCase("n")){
-					System.out.println("Introduce nombre");
-					String r = console.readLine();
-					daocompra.consultarn(r);//te muestra los datos que contienen el nombre introducido
-				}
-				
-				else if(respuesta2.equalsIgnoreCase("i")){
-					System.out.println("Introduce id");
-					String r = console.readLine();
-					int r2=Integer.parseInt(r);
-					System.out.println(daocompra.consultari(r2));//te muestra la compra de una persona
-				} else{//si la opcion que se introdujo no es n, p, i que salte este error y que pregunte si desea consultar o no.
-					System.out.println("Lo sentimos! Esa opcion no esta disponible");
-				}
-			}
-			else{//Mensaje despedida cuando el cliente se vaya
-				System.out.println("Nos vemos jefe!.");
-				break;
-			}
-		}
-
-		} else if (tipoEntrante.equalsIgnoreCase("C")) {
-        
-        //una vez leidos y guardados, se empieza con la compra
-		Compra c;
-		ArrayList<Compra> lista1 = new ArrayList<Compra>();
-		console = System.console();
-		while(true){//bucle para crear compras, con sus respectivos datos (persona, articulos, cantidad y precio)
-			c = new Compra();
-			Person p = new Person();
-			System.out.println("Nombre persona: ");//nombre de la persona
-			String persona = console.readLine();
-			if(persona.equals("")){
-					break;
-				}
-			p.setName(persona);//setteo nombre de la persona
-			System.out.println("ID de compra: ");
-			String idcomp = console.readLine();
-			int idcom=Integer.parseInt(idcomp);
-			
-			while(true){//este while es para que una persona pueda comprar mas de un articulo en una compra
-				c.setId(idcom);//setteo del id
-				System.out.println("Articulos: ");//articulo
-				String articulo = console.readLine();
-				if(articulo.equals("")){
-					break;
-				}
-				for(int i = 0;i<listaProds.size();i++){//aqui esta la informacion
+          			String a4="";
+	  	  			for(int i = 0;i<listaProds.size();i++){
 					String[] a = listaProds.get(i).split(":");
-					
-					if(articulo.equals(a[0])){
-						c.getArt().setNombre(articulo);//si el articulo está en la lista de productos disponibles, setteo del articulo
-
-						Double preciop=Double.parseDouble(a[1]);
-						System.out.println("Cantidad: ");//cantidad de articulos
-						String canti = console.readLine();
-						if(canti.equals("")){
-							break;
-						}
-						Double cant = Double.parseDouble(canti);
-						c.getArt().setPrecio(preciop * cant);//setteo de precio por cantidad (precio final por producto)
-						c.setCant(cant);//setteo de cantidad
-						c.getPer().setName(p.getName());//setteo de la persona dentro de la clase Compra
-						Date fechaFactura = new Date();//Creación de fecha
-						c.setFecha(fechaFactura);//setteo a la compra de fecha/hora
-						lista1.add(c);//añadido de la compra a la lista
-						daocompra.grabar(c);//se guarda en la base de datos
+					a4=a4+a[0] + " -> " + a[1] + " €"+"\n";
 					}
-				}
-				System.out.println("Mas articulos? S|N ");//Para agregar más articulos a la misma persona
-				String masart = console.readLine();
-				if(masart.equalsIgnoreCase("n")){
-					c.setArticulos(lista1);
-					System.out.println("Gracias por su compra " + c.getPer().getName());
-					break;
-				}
-				else{
-					c = new Compra();//si queremos agregar más articulos crea una nueva compra y se le añaden articulos, al no haber creado una persona nueva
-					//se le agrega la ultima persona creada, asi no crea conflictos de persona de compra = null
-					//ni agregar articulos de otras personas.
-				}
-			}
-			System.out.println("Mas entradas? S|N ");//Para agregar más entradas (personas y articulos)
-			String masper = console.readLine();
-			if(masper.equalsIgnoreCase("n")){
-				break;
-			}
+					 lprod6.setText(a4);
+					 lprod3.setText(a4);
+          	}
+
+          }catch (Exception e2) {
+         e2.printStackTrace();
+      }
+               stage.setScene(scene6);
+              
+        }
+            
+        });
+
+
+         volver6.setOnAction(e -> stage.setScene(scene1));
+		exit6.setOnAction(e -> {
+			stage.close();
+		});
+	  	  a1="";
+	  	  for(int i = 0;i<listaProds.size();i++){
+			String[] a = listaProds.get(i).split(":");
+			a1=a1+a[0] + " -> " + a[1] + " €"+"\n";
 		}
-		//Confirmación de registro en la base de datos, con la fecha de la factura.
-		System.out.println("Los datos han quedado guardados en la base de datos. A fecha de "+ new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(c.getFecha()));
-		//Se le cambia el formato de la fecha de Compra para que la muestre como nosotros la visualizamos dia-mes-año y hora:min:seg
-		System.out.println("Vuelva pronto.");
+		lprod6=new Label(a1);
+		HBox h6 = new HBox();
+        h6.getChildren().addAll(volver6,exit6);
+        HBox hanadir = new HBox();
+        hanadir.getChildren().addAll(anadirnombre,tanadirnombre,anadirprecio,tanadirprecio,banadir);
+        HBox heliminar = new HBox();
+        heliminar.getChildren().addAll(eliminar,teliminar,beliminar);
+		VBox vbox6=new VBox();
+		vbox6.getChildren().addAll(tiendalabel6,prod6,lprod6,hanadir,heliminar,h6);
+		vbox6.setSpacing(15);
+      	vbox6.setMinSize(150,400);
+	  	vbox6.setStyle("-fx-padding: 10;" +
+	                "-fx-border-style: solid inside;" +
+	                "-fx-border-width: 2;" +
+	                "-fx-border-insets: 5;" +
+	                "-fx-border-radius: 5;" +
+	                "-fx-border-color: blue;");
+	  	scene6=new Scene(vbox6);
+
+
+
+
+	  	//Escena factura
+
+		Label tiendalabelfac = new Label("BACO & GARRIDO ALIMENTOS");
+		VBox vboxfac=new VBox();
+		Button exitfac = new Button("Salir");
+		exitfac.setOnAction(e -> {
+			stage2.close();
+		});
+		
+
+            
+		
+		vboxfac.getChildren().addAll(tiendalabelfac,ll,exitfac);
+		vboxfac.setSpacing(15);
+      	vboxfac.setMinSize(500,900);
+	  	vboxfac.setStyle("-fx-padding: 10;" +
+	                "-fx-border-style: solid inside;" +
+	                "-fx-border-width: 2;" +
+	                "-fx-border-insets: 5;" +
+	                "-fx-border-radius: 5;" +
+	                "-fx-border-color: blue;");
+	  	scenefactura=new Scene(vboxfac);
+
+	  	stage.setScene(scene1);
+      	stage.show();
 	}
-}}
+	
+}
