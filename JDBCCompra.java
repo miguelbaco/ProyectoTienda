@@ -2,13 +2,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import org.sqlite.SQLiteDataSource;
+
 //Implementamos la clase DataSource
+import org.sqlite.SQLiteDataSource;
 import javax.sql.DataSource;
-import javax.annotation.Resource;
-//aqui esta el codigo para grabar y consultar
+
+/**
+ * Esta clase JDBCCompra contiene los métodos de consulta, el método conectar y grabar
+ */
 public class JDBCCompra implements DAOCompra{
+
+        // Variable dataSource
         private SQLiteDataSource dataSource = new SQLiteDataSource();
+
+        /* Método conectar con sqlite
+         * @return conn Objeto Connection que contecta con sqlite
+         */
         private Connection conectar() throws SQLException {
                
                 dataSource.setUrl("jdbc:sqlite:compra.db");
@@ -21,26 +30,11 @@ public class JDBCCompra implements DAOCompra{
                 }
                 return conn;
         }
-/*
-        ArrayList<Integer> listaIDs= new ArrayList<Integer>();
-        public void idexistente(int ids){
-                try  {
-                        String sql1 = "SELECT ID FROM compra";
-                        Connection conn = this.conectar();
-                        PreparedStatement pstmt = conn.prepareStatement(sql1);
-                        ResultSet rs = pstmt.executeQuery();
-                        while (rs.next()) {
-                                listaIDs.add(rs.getInt("ID"));
-                        }
-                        if(listaIDs.contains(ids)){
-                                System.out.println("Esta ID ya existe.");
-                        }
-                } catch (SQLException o) {
-                        System.out.println(o.getMessage());
-                }
-        }
-*/
-        public void grabar(Compra c) {//codigo para grabar
+
+        /* Método grabar
+         * @param c Compra a grabar
+         */
+        public void grabar(Compra c) {
                 java.sql.Timestamp sqlDate = new java.sql.Timestamp(c.getFecha().getTime());
                 String sql = "INSERT INTO compra (Cliente,Producto,Cantidad,Precio,ID,Fecha) VALUES(?,?,?,?,?,?)";
                 try (Connection conn = this.conectar(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -55,8 +49,13 @@ public class JDBCCompra implements DAOCompra{
                         System.out.println(o.getMessage());
                 }
         }
-        //a partir de aqui, el codigo es para consultar.
-        public String consultart() {//aqui te muestra todo lo que hay almacenado en la base de datos
+
+        //Métodos de consulta
+
+        /* Método de consulta de todas las compras guardadas en base de datos
+         * @return aa String con todas las compras
+         */
+        public String consultart() {
                 String aa="";
                 try  {
                         
@@ -75,21 +74,11 @@ public class JDBCCompra implements DAOCompra{
                         System.out.println(o.getMessage());
                 }return aa;
         }
-        public void consultarn(String nombre){//aqui te muestra solo aquellos con el nombre introducido
-                try{
-                        String sql2 = "SELECT * FROM compra WHERE CLIENTE ='"+nombre+"'";
-                        Connection conn = this.conectar();
-                        PreparedStatement pstmt = conn.prepareStatement(sql2);
-                        ResultSet rs = pstmt.executeQuery();
-                        System.out.println("Cliente: "+rs.getString("Cliente"));
-                        while (rs.next()) {     
-                                 System.out.println(rs.getDouble("Cantidad")+" Kg. de "+rs.getString("Producto")+" por "+rs.getDouble("Precio") + " €, con ID " + rs.getInt("ID") + " a fecha de " + rs.getTimestamp("Fecha"));
-                         }     
-                }
-                catch (SQLException o) {
-                        System.out.println(o.getMessage());
-                }
-        }
+
+        /* Método de consulta por busqueda de ID 
+         * @param id ID de compras a buscar
+         * @return aa String con todas las compras hechas asignadas a ese ID
+         */
         public String consultari(int id){//aqui te muestra solo aquellos con la ID introducida.
                 String aa="";
                 try{

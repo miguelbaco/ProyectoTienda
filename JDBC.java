@@ -1,18 +1,38 @@
 import java.sql.*;
+
+//Implementamos la clase DataSource
 import javax.sql.DataSource;
 import org.sqlite.SQLiteDataSource;
-//esta clase es para crear la tabla. para poder hacerlo, primero hay que poseer un archivo con extension .db
+
+/**
+ * Esta clase JDBC crea la tabla, para ello primero debemos tener un archivo de extensión .db
+ */
 public class JDBC {
-        private SQLiteDataSource dataSource;  // sería interesante inyectar mediante setter
-        public void setDataSource(SQLiteDataSource d) {
-                dataSource = d;
-        }
-        public SQLiteDataSource getDataSource() {
-                return dataSource;
-        }
+        //Variable dataSource
+        private SQLiteDataSource dataSource;
+
+        // Constructor por defecto
         public JDBC() {
                 dataSource = new SQLiteDataSource();
         }
+
+        /* Método set de DataSource
+         * @param d Objeto datasource
+         */
+        public void setDataSource(SQLiteDataSource d) {
+                dataSource = d;
+        }
+
+        /* Método get de DataSource
+         * @return dataSource Objeto datasource
+         */
+        public SQLiteDataSource getDataSource() {
+                return dataSource;
+        }
+
+        /* 
+         *  Método main de JDBC que crea la tabla
+         */
         public static void main(String[] args) {
                 JDBC obj = new JDBC();
                 (obj.getDataSource()).setUrl("jdbc:sqlite:compra.db");

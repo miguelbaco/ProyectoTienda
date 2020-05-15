@@ -1,5 +1,9 @@
 manzanas:2
 sandias:5
 fresas:3
-peras:6
 lechuga:7
+dulces:2
+platanos:4
+patatas:1
+pescado:3
+carne:6
