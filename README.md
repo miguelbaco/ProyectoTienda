@@ -9,19 +9,23 @@ O bien lo puedes obtener mejor mediante las dependencias de maven (está en las 
 
 Dependencias necesarias:
 ```bash
-- $ mvn dependency:copy-dependencies package
+$ mvn dependency:copy-dependencies package
 ```
 
 Compilación:
+- Ubuntu y Windows:
 ```bash
-- Ubuntu: $ mvn clean package
-- Windows: $ mvn clean package
+$ mvn clean package
 ```
 
-Ejecución:
+Ejecución
+- Ubuntu: 
 ```bash
-- Ubuntu: $ java -cp target/proyecto3-0.1.0.BUILD-SNAPSHOT.jar:target/dependency/*:. Tienda
-- Windows: $ java -cp target/proyecto3-0.1.0.BUILD-SNAPSHOT.jar;target/dependency/*;. Tienda
+$ java -cp target/proyecto3-0.1.0.BUILD-SNAPSHOT.jar:target/dependency/*:. Tienda
+```
+- Windows: 
+```bash
+$ java -cp target/proyecto3-0.1.0.BUILD-SNAPSHOT.jar;target/dependency/*;. Tienda
 ```
 
 ## Para la base de datos:
