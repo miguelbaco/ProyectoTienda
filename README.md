@@ -5,7 +5,7 @@ Proyecto a medias entre
 ###### 1º DAW
 
 *Para compilar y ejecutar el programa necesitas el jar de sqlite, para descargarlo pincha [Aquí](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.27.2).*
-O bien lo puedes obtener mejor mediante las dependencias de maven (explicado más adelante)
+O bien lo puedes obtener mejor mediante las dependencias de maven (está en las dependencias necesarias)
 
 Dependencias necesarias:
 ```bash
@@ -42,7 +42,7 @@ java -cp .;sqlite-jdbc-3.27.2.jar;. JDBC
 Una vez hecho esto se creará el fichero compra.db y listo para su uso.
 
 ## ¿Qué se ha usado?
-Para este trabajo usamos JDBC (Java Data Base Connectivity) para almacenar e interactuar con una base de datos y con JavaFX como interfaz gráfica con la que interactua el usuario de una manera más visual y clara.
+Para este trabajo usamos JDBC (Java Data Base Connectivity) para almacenar e interactuar con una base de datos y con JavaFX como interfaz gráfica con la que interactua el usuario de una manera mas visual y clara.
 
 ## ¿Para qué sirve?
 Este programa puede ser utilizado perfectamente por una tienda, para llevar la disponibilidad de todos sus productos, para añadir o quitar de stock y ademas para procesar las compras de los clientes guardando sus productos, precios y fecha de compra. Para añadir, puedes consultar la base de datos con los registros de todas las compras realizadas en la tienda.
