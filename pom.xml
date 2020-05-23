@@ -61,8 +61,8 @@
         			<version>2.12.4</version>
         			<configuration>
           				<additionalClasspathElements>
-            			<additionalClasspathElement>path/to/additional/resources</additionalClasspathElement>
-            			<additionalClasspathElement>path/to/additional/jar</additionalClasspathElement>
+            				<additionalClasspathElement>path/to/additional/resources</additionalClasspathElement>
+            				<additionalClasspathElement>path/to/additional/jar</additionalClasspathElement>
           				</additionalClasspathElements>
        				</configuration>
      		 </plugin>
