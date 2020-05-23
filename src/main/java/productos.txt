@@ -1,0 +1,9 @@
+manzanas:2
+sandias:5
+fresas:3
+dulces:2
+platanos:4
+patatas:1
+pescado:3
+carne:6
+jamon:10
