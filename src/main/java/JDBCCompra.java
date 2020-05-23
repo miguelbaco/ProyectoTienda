@@ -86,10 +86,12 @@ public class JDBCCompra implements DAOCompra{
                         Connection conn = this.conectar();
                         PreparedStatement pstmt = conn.prepareStatement(sql2);
                         ResultSet rs = pstmt.executeQuery();
+                         aa= ("Cliente: "+ rs.getString("Cliente")+"\n\n");
                         String ff="";
                         while (rs.next()) {     
                                  aa=aa+(rs.getDouble("Cantidad")+" Kg. de "+rs.getString("Producto")+"\n"+rs.getDouble("Precio") + " €" +"\n");
                                  ff=("Fecha: "+rs.getTimestamp("Fecha"));
+
                          }     
                          aa=aa+ff;
                 }
