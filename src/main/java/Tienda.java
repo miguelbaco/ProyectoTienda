@@ -89,9 +89,9 @@ public class Tienda extends Application{
 
 		// Labels y botones  
 		Label tiendalabel1 = new Label("BACO & GARRIDO ALIMENTOS");
-      	Button proveedor = new Button("PROVEEDOR");
-		Button cliente = new Button("CLIENTE");
-		Button dueno = new Button("Dueño");
+      	Button proveedor = new Button("AÑADIR/ELIMINAR PRODUCTOS");
+		Button cliente = new Button("COMPRAR");
+		Button dueno = new Button("CONSULTAR DATOS DE COMPRA");
 		Button exit1 = new Button("Salir");
 
 		// Acciones de botones principal
