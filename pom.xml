@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -27,6 +27,18 @@
     	<type>pom</type>
 	</dependency>
 
+	<dependency>
+    	<groupId>org.openjfx</groupId>
+    	<artifactId>javafx-controls</artifactId>
+    	<version>13</version>
+	</dependency>
+
+  <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+  <dependency>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>2.3.2</version>
+  </dependency>
 
 	</dependencies>
 
@@ -42,6 +54,18 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+
+			 <plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+       				<artifactId>maven-surefire-plugin</artifactId>
+        			<version>2.12.4</version>
+        			<configuration>
+          				<additionalClasspathElements>
+            			<additionalClasspathElement>path/to/additional/resources</additionalClasspathElement>
+            			<additionalClasspathElement>path/to/additional/jar</additionalClasspathElement>
+          				</additionalClasspathElements>
+       				</configuration>
+     		 </plugin>
 
 		</plugins>
 	</build>
