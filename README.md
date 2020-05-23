@@ -7,22 +7,21 @@ Proyecto a medias entre
 *Para compilar y ejecutar el programa necesitas el jar de sqlite, para descargarlo pincha [Aquí](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.27.2).*
 O bien lo puedes obtener mejor mediante las dependencias de maven (explicado más adelante)
 
-Compilación:
-```bash
-- Ubuntu: $ mvn clean package  // mvn clean compile
-- Windows: $ mvn clean package // mvn clean compile
-```
-
-
 Dependencias necesarias:
 ```bash
 - $ mvn dependency:copy-dependencies package
 ```
 
+Compilación:
+```bash
+- Ubuntu: $ mvn clean package
+- Windows: $ mvn clean package
+```
+
 Ejecución:
 ```bash
 - Ubuntu: $ java -cp target/proyecto3-0.1.0.BUILD-SNAPSHOT.jar:target/dependency/*:. Tienda
-- Windows: $ 
+- Windows: $ java -cp target/proyecto3-0.1.0.BUILD-SNAPSHOT.jar;target/dependency/*;. Tienda
 ```
 
 ## Para la base de datos:
